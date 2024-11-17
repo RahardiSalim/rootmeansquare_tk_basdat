@@ -1,0 +1,160 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIJARTA - {% block title %}{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            min-width: 200px;
+            z-index: 1;
+        }
+        
+        .dropdown-content.show {
+            display: block;
+        }
+
+        /* Add overlay styles */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 0;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Overlay for clicking outside -->
+    <div id="overlay" class="overlay"></div>
+
+    <nav class="bg-blue-600 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <span class="font-bold text-xl">SIJARTA</span>
+                {% if request.session.is_authenticated %}
+                    {% if user.is_staff %}
+                        <span class="bg-yellow-500 px-2 py-1 rounded text-sm">Pekerja</span>
+                        <span class="text-sm">{{ user.name }}</span>
+                    {% else %}
+                        <span class="bg-green-500 px-2 py-1 rounded text-sm">Pengguna</span>
+                        <span class="text-sm">{{ user.name }}</span>
+                    {% endif %}
+                {% endif %}
+            </div>
+            
+            <div class="space-x-4">
+                {% if request.session.is_authenticated %}
+                    {% if user.is_staff %}
+                        <!-- Navbar Pekerja -->
+                        <a href="{% url 'authentication:homepage' %}" class="hover:text-gray-300">Homepage</a>
+                        <a href="#" class="hover:text-gray-300">Kelola Pekerjaan Saya</a>
+                        <a href="#" class="hover:text-gray-300">Kelola Status Pekerjaan</a>
+                        <a href="#" class="hover:text-gray-300">MyPay</a>
+                        <a href="{% url 'authentication:profile' %}" class="hover:text-gray-300">Profile</a>
+                        <a href="{% url 'authentication:logout' %}" class="bg-red-500 px-3 py-1 rounded hover:bg-red-600">Logout</a>
+                    {% else %}
+                        <!-- Navbar Pengguna -->
+                        <a href="{% url 'authentication:homepage' %}" class="hover:text-gray-300">Homepage</a>
+                        <a href="#" class="hover:text-gray-300">MyPay</a>
+                        <a href="#" class="hover:text-gray-300">Kelola Pesanan Saya</a>
+                        <a href="#" class="hover:text-gray-300">Diskon</a>
+                        <a href="{% url 'authentication:profile' %}" class="hover:text-gray-300">Profile</a>
+                        <a href="{% url 'authentication:logout' %}" class="bg-red-500 px-3 py-1 rounded hover:bg-red-600">Logout</a>
+                    {% endif %}
+                {% else %}
+                    <!-- Navbar Guest -->
+                    <a href="{% url 'authentication:login' %}" class="hover:text-gray-300">Login</a>
+                    <div class="dropdown inline-block">
+                        <button id="registerBtn" class="hover:text-gray-300 focus:outline-none">Register</button>
+                        <div id="registerDropdown" class="dropdown-content bg-white text-gray-800 mt-2 rounded-md shadow-lg">
+                            <a href="{% url 'authentication:register_pengguna' %}" class="block px-4 py-3 hover:bg-gray-100 rounded-t-md">
+                                Register sebagai Pengguna
+                            </a>
+                            <a href="{% url 'authentication:register_pekerja' %}" class="block px-4 py-3 hover:bg-gray-100 rounded-b-md">
+                                Register sebagai Pekerja
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container mx-auto p-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="{% if message.tags == 'error' %}bg-red-100 border-red-400 text-red-700{% else %}bg-green-100 border-green-400 text-green-700{% endif %} border px-4 py-3 rounded relative mb-4">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        {% block content %}{% endblock %}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const registerBtn = document.getElementById('registerBtn');
+            const registerDropdown = document.getElementById('registerDropdown');
+            const overlay = document.getElementById('overlay');
+            let isOpen = false;
+
+            function toggleDropdown() {
+                isOpen = !isOpen;
+                registerDropdown.classList.toggle('show');
+                overlay.classList.toggle('show');
+            }
+
+            // Toggle dropdown when clicking the register button
+            registerBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleDropdown();
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (isOpen && !registerDropdown.contains(e.target) && e.target !== registerBtn) {
+                    toggleDropdown();
+                }
+            });
+
+            // Prevent dropdown from closing when clicking inside it
+            registerDropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+
+            // Close dropdown when clicking overlay
+            overlay.addEventListener('click', function() {
+                if (isOpen) {
+                    toggleDropdown();
+                }
+            });
+
+            // Close dropdown when pressing Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && isOpen) {
+                    toggleDropdown();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

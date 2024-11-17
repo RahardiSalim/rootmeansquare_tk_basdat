@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold mb-6">Profile</h2>
+    
+    {% if user.is_staff %}
+        {# Pekerja Profile #}
+        <div class="grid grid-cols-2 gap-8">
+            <div>
+                <div class="w-32 h-32 rounded-full overflow-hidden mx-auto mb-4 border-2 border-black">
+                    {% if user.photo_link %}
+                        <img src="{{ user.photo_link }}" alt="Profile Photo" class="w-full h-full object-cover">
+                    {% else %}
+                        <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                            <span class="text-gray-500">No Photo</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <h3 class="font-bold mb-4">Current Information</h3>
+                <div class="space-y-2">
+                    <p><span class="font-semibold">Nama:</span> {{ user.name }}</p>
+                    <p><span class="font-semibold">Jenis Kelamin:</span> {{ user.gender }}</p>
+                    <p><span class="font-semibold">No HP:</span> {{ user.no_hp }}</p>
+                    <p><span class="font-semibold">Tanggal Lahir:</span> {{ user.birth_date }}</p>
+                    <p><span class="font-semibold">Alamat:</span> {{ user.address }}</p>
+                    <p><span class="font-semibold">Nama Bank:</span> {{ user.address }}</p>
+                    <p><span class="font-semibold">No Rekening:</span> {{ user.account_number }}</p>
+                    <p><span class="font-semibold">NPWP:</span> {{ user.npwp }}</p>
+                    <p><span class="font-semibold">Rating:</span> {{ user.rating }}</p>
+                    <p><span class="font-semibold">Pesanan Selesai:</span> {{ user.completed_orders }}</p>
+                    <p><span class="font-semibold">Kategori Pekerjaan:</span>
+                        <ul class="ml-4">
+                            {% for kategori in user.kategori_pekerjaan %}
+                                <li>- {{ kategori }}</li>
+                            {% endfor %}
+                        </ul>
+                    </p>
+                    <p><span class="font-semibold">Saldo MyPay:</span> Rp {{ user.balance|floatformat:0 }}</p>
+                </div>
+            </div>
+            <div>
+                <h3 class="font-bold mb-4">Update Information</h3>
+                <form method="post" class="space-y-4" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div>
+                        <label class="block text-gray-700">Nama</label>
+                        <input type="text" name="username" value="{{ user.name }}" class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">Jenis Kelamin</label>
+                        <select name="gender" class="w-full px-3 py-2 border rounded-lg">
+                            <option value="L" {% if user.gender == 'L' %}selected{% endif %}>Laki-laki</option>
+                            <option value="P" {% if user.gender == 'P' %}selected{% endif %}>Perempuan</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">No HP</label>
+                        <input type="text" name="no_hp" value="{{ user.phone }}" class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">Tanggal Lahir</label>
+                        <input type="date" name="tgl_lahir" value="{{ user.birth_date|date:'Y-m-d' }}" class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">Alamat</label>
+                        <textarea name="alamat" class="w-full px-3 py-2 border rounded-lg">{{ user.address }}</textarea>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">Nama Bank</label>
+                        <select name="nama_bank" class="w-full px-3 py-2 border rounded-lg">
+                            <option value="GoPay" {% if user.nama_bank == 'GoPay' %}selected{% endif %}>GoPay</option>
+                            <option value="OVO" {% if user.nama_bank == 'OVO' %}selected{% endif %}>OVO</option>
+                            <option value="VA_BCA" {% if user.nama_bank == 'VA_BCA' %}selected{% endif %}>Virtual Account BCA</option>
+                            <option value="VA_BNI" {% if user.nama_bank == 'VA_BNI' %}selected{% endif %}>Virtual Account BNI</option>
+                            <option value="VA_Mandiri" {% if user.nama_bank == 'VA_Mandiri' %}selected{% endif %}>Virtual Account Mandiri</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">No Rekening</label>
+                        <input type="text" name="no_rekening" value="{{ user.account_number }}" class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">NPWP</label>
+                        <input type="text" name="npwp" value="{{ user.npwp }}" class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">Foto</label>
+                        <input type="text" name="photo" value="{{ user.photo_link }}" class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        {# Pengguna Profile #}
+        <div class="grid grid-cols-2 gap-8">
+            <div>
+                <h3 class="font-bold mb-4">Current Information</h3>
+                <div class="space-y-2">
+                    <p><span class="font-semibold">Nama:</span> {{ user.name }}</p>
+                    <p><span class="font-semibold">Jenis Kelamin:</span> {{ user.gender }}</p>
+                    <p><span class="font-semibold">No HP:</span> {{ user.phone }}</p>
+                    <p><span class="font-semibold">Tanggal Lahir:</span> {{ user.birth_date }}</p>
+                    <p><span class="font-semibold">Alamat:</span> {{ user.address }}</p>
+                    <p><span class="font-semibold">Level:</span> {{ user.level }}</p>
+                    <p><span class="font-semibold">Saldo MyPay:</span> Rp {{ user.balance|floatformat:0 }}</p>
+                </div>
+            </div>
+            <div>
+                <h3 class="font-bold mb-4">Update Information</h3>
+                <form method="post" class="space-y-4">
+                    {% csrf_token %}
+                    <div>
+                        <label class="block text-gray-700">Nama</label>
+                        <input type="text" name="username" value="{{ user.name }}" class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">Jenis Kelamin</label>
+                        <select name="gender" class="w-full px-3 py-2 border rounded-lg">
+                            <option value="L" {% if user.gender == 'L' %}selected{% endif %}>Laki-laki</option>
+                            <option value="P" {% if user.gender == 'P' %}selected{% endif %}>Perempuan</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">No HP</label>
+                        <input type="text" name="no_hp" value="{{ user.phone }}" class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">Tanggal Lahir</label>
+                        <input type="date" name="tgl_lahir" value="{{ user.birth_date|date:'Y-m-d' }}" class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">Alamat</label>
+                        <textarea name="alamat" class="w-full px-3 py-2 border rounded-lg">{{ user.address }}</textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

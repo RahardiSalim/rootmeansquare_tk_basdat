@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Welcome Section -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h1 class="text-3xl font-bold mb-4">Welcome to MyService</h1>
+        <p class="text-gray-600 mb-4">Find the best service providers for your needs.</p>
+        
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+            <div class="bg-blue-50 p-4 rounded-lg">
+                <h3 class="font-semibold text-blue-700">Available Services</h3>
+                <p class="text-2xl font-bold">10+</p>
+            </div>
+            <div class="bg-green-50 p-4 rounded-lg">
+                <h3 class="font-semibold text-green-700">Professional Workers</h3>
+                <p class="text-2xl font-bold">50+</p>
+            </div>
+            <div class="bg-purple-50 p-4 rounded-lg">
+                <h3 class="font-semibold text-purple-700">Happy Customers</h3>
+                <p class="text-2xl font-bold">100+</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Services -->
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold mb-4">Our Services</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Service Card 1 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="bg-gray-100 h-48"></div>
+                <div class="p-4">
+                    <h3 class="font-bold mb-2">Home Cleaning</h3>
+                    <p class="text-gray-600 text-sm">Professional home cleaning services.</p>
+                    <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Book Now</button>
+                </div>
+            </div>
+            
+            <!-- Service Card 2 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="bg-gray-100 h-48"></div>
+                <div class="p-4">
+                    <h3 class="font-bold mb-2">Laundry</h3>
+                    <p class="text-gray-600 text-sm">Quality laundry and dry cleaning services.</p>
+                    <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Book Now</button>
+                </div>
+            </div>
+            
+            <!-- Service Card 3 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="bg-gray-100 h-48"></div>
+                <div class="p-4">
+                    <h3 class="font-bold mb-2">Home Repair</h3>
+                    <p class="text-gray-600 text-sm">Expert home repair and maintenance.</p>
+                    <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Why Choose Us -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold mb-6">Why Choose Us</h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="text-center">
+                <div class="bg-blue-100 w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center">
+                    <span class="text-blue-600 text-2xl">✓</span>
+                </div>
+                <h3 class="font-semibold mb-2">Verified Professionals</h3>
+                <p class="text-gray-600 text-sm">All our service providers are verified</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="bg-green-100 w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center">
+                    <span class="text-green-600 text-2xl">💰</span>
+                </div>
+                <h3 class="font-semibold mb-2">Best Prices</h3>
+                <p class="text-gray-600 text-sm">Competitive rates for all services</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="bg-yellow-100 w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center">
+                    <span class="text-yellow-600 text-2xl">⭐</span>
+                </div>
+                <h3 class="font-semibold mb-2">Quality Service</h3>
+                <p class="text-gray-600 text-sm">Satisfaction guaranteed</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="bg-purple-100 w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center">
+                    <span class="text-purple-600 text-2xl">🔒</span>
+                </div>
+                <h3 class="font-semibold mb-2">Secure Payments</h3>
+                <p class="text-gray-600 text-sm">Safe and secure transactions</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

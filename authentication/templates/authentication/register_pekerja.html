@@ -1,0 +1,69 @@
+{# register_pekerja.html #}
+{% extends 'base.html' %}
+{% block title %}Register Pekerja{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold mb-6 text-center">Register Pekerja</h2>
+    <form method="post" class="space-y-4">
+        {% csrf_token %}
+        <div>
+            <label class="block text-gray-700">Nama</label>
+            <input type="text" name="username" required class="w-full px-3 py-2 border rounded-lg">
+        </div>
+        <div>
+            <label class="block text-gray-700">Jenis Kelamin</label>
+            <select name="gender" required class="w-full px-3 py-2 border rounded-lg">
+                <option value="L">Laki-laki</option>
+                <option value="P">Perempuan</option>
+            </select>
+        </div>
+        <div>
+            <label class="block text-gray-700">No HP</label>
+            <input type="text" name="no_hp" required class="w-full px-3 py-2 border rounded-lg">
+        </div>
+        <div>
+            <label class="block text-gray-700">Password</label>
+            <input type="password" name="password1" required class="w-full px-3 py-2 border rounded-lg">
+        </div>
+        <div>
+            <label class="block text-gray-700">Konfirmasi Password</label>
+            <input type="password" name="password2" required class="w-full px-3 py-2 border rounded-lg">
+        </div>
+        <div>
+            <label class="block text-gray-700">Tanggal Lahir</label>
+            <input type="date" name="tgl_lahir" required class="w-full px-3 py-2 border rounded-lg">
+        </div>
+        <div>
+            <label class="block text-gray-700">Alamat</label>
+            <textarea name="alamat" required class="w-full px-3 py-2 border rounded-lg"></textarea>
+        </div>
+        <div>
+            <label class="block text-gray-700">Nama Bank</label>
+            <select name="nama_bank" required class="w-full px-3 py-2 border rounded-lg">
+                <option value="GoPay">GoPay</option>
+                <option value="OVO">OVO</option>
+                <option value="VA_BCA">Virtual Account BCA</option>
+                <option value="VA_BNI">Virtual Account BNI</option>
+                <option value="VA_Mandiri">Virtual Account Mandiri</option>
+            </select>
+        </div>
+        <div>
+            <label class="block text-gray-700">No Rekening</label>
+            <input type="text" name="no_rekening" required class="w-full px-3 py-2 border rounded-lg">
+        </div>
+        <div>
+            <label class="block text-gray-700">NPWP</label>
+            <input type="text" name="npwp" required class="w-full px-3 py-2 border rounded-lg">
+        </div>
+        <div>
+            <label class="block text-gray-700">URL Foto</label>
+            <input type="url" name="foto_url" required class="w-full px-3 py-2 border rounded-lg" placeholder="https://example.com/your-photo.jpg">
+        </div>
+        <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Register</button>
+    </form>
+    <div class="mt-4 text-center">
+        <a href="{% url 'authentication:login' %}" class="text-blue-500 hover:underline">Sudah punya akun? Login di sini</a>
+    </div>
+</div>
+{% endblock %}
