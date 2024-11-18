@@ -65,16 +65,16 @@
                     {% if user.is_staff %}
                         <!-- Navbar Pekerja -->
                         <a href="{% url 'authentication:homepage' %}" class="hover:text-gray-300">Homepage</a>
-                        <a href="#" class="hover:text-gray-300">Kelola Pekerjaan Saya</a>
-                        <a href="#" class="hover:text-gray-300">Kelola Status Pekerjaan</a>
-                        <a href="#" class="hover:text-gray-300">MyPay</a>
+                        <a href="/" class="hover:text-gray-300">Kelola Pekerjaan Saya</a>
+                        <a href="/" class="hover:text-gray-300">Kelola Status Pekerjaan</a>
+                        <a href="/" class="hover:text-gray-300">MyPay</a>
                         <a href="{% url 'authentication:profile' %}" class="hover:text-gray-300">Profile</a>
                         <a href="{% url 'authentication:logout' %}" class="bg-red-500 px-3 py-1 rounded hover:bg-red-600">Logout</a>
                     {% else %}
                         <!-- Navbar Pengguna -->
                         <a href="{% url 'authentication:homepage' %}" class="hover:text-gray-300">Homepage</a>
-                        <a href="#" class="hover:text-gray-300">MyPay</a>
-                        <a href="#" class="hover:text-gray-300">Kelola Pesanan Saya</a>
+                        <a href="/mypay/" class="hover:text-gray-300">MyPay</a>
+                        <a href="/service/view-orders/" class="hover:text-gray-300">Kelola Pesanan Saya</a>
                         <a href="/discount/" class="hover:text-gray-300">Diskon</a>
                         <a href="{% url 'authentication:profile' %}" class="hover:text-gray-300">Profile</a>
                         <a href="{% url 'authentication:logout' %}" class="bg-red-500 px-3 py-1 rounded hover:bg-red-600">Logout</a>
