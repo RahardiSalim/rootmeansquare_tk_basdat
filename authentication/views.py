@@ -159,6 +159,7 @@ def login_view(request):
             # Create session data with complete user information
             request.session['user'] = user
             request.session['is_authenticated'] = True
+            request.session['role'] = 'pekerja' if user['is_staff'] else 'pengguna'
             return redirect('authentication:homepage')
         else:
             messages.error(request, 'Invalid phone number or password.')
