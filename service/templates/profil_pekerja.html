@@ -1,0 +1,43 @@
+{% extends 'base_pekerja.html' %}
+{% block title %}Profil Pekerja{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <h1 class="text-2xl font-bold mb-4">Profil Pekerja</h1>
+
+    <div class="bg-white p-6 rounded shadow-md">
+        <div class="flex items-center mb-6">
+            <div class="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center mr-4">
+                <span class="text-gray-500 text-3xl">👤</span>
+            </div>
+            <div>
+                <h2 class="text-xl font-bold">John Doe</h2>
+                <p class="text-gray-600">Rating: 4.5/10</p>
+                <p class="text-gray-600">Jumlah Pesanan Selesai: 120</p>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <p><strong>No HP:</strong> 081234567890</p>
+            <p><strong>Tanggal Lahir:</strong> 01/01/1990</p>
+            <p><strong>Alamat:</strong> Jakarta</p>
+        </div>
+    </div>
+
+    <div class="mt-8">
+        <h2 class="text-xl font-bold mb-4">Testimoni</h2>
+        <div class="bg-white p-4 rounded shadow-md">
+            {% for testimonial in testimonials %}
+            <div class="border-b py-2">
+                <p class="font-semibold">Nama Pengguna: {{ testimonial.user_name }}</p>
+                <p class="text-gray-600 text-sm">Tanggal: {{ testimonial.date }}</p>
+                <p class="text-gray-600 text-sm">Rating: {{ testimonial.rating }}</p>
+                <p class="text-gray-800 italic">{{ testimonial.text }}</p>
+            </div>
+            {% empty %}
+            <p class="text-gray-600 italic">Belum ada testimoni.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

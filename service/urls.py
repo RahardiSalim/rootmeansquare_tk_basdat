@@ -6,5 +6,6 @@ urlpatterns = [
     path('subcategory/<str:subcategory_name>/worker/', views.subcategory_services_worker, name='subcategory_worker'),
     path('create-order/', views.create_order, name='create_order'),  # Route untuk create order
     path('view-orders/', views.view_orders, name='view_orders'),    # Route untuk view orders
+    path('profil/', views.profil_pekerja, name='profil_pekerja'),
 
 ]

@@ -147,3 +147,33 @@ def view_orders(request):
         order['show_testimonial_button'] = order['status'] == "Pesanan Selesai" and not order.get('testimonial_created', False)
 
     return render(request, 'view_orders.html', {'orders': filtered_orders})
+
+from django.shortcuts import render
+
+def profil_pekerja(request):
+    # Hardcoded testimonials
+    testimonials = [
+        {
+            "user_name": "Jane Doe",
+            "date": "2024-11-01",
+            "rating": 5,
+            "text": "Pekerjaan sangat memuaskan!"
+        },
+        {
+            "user_name": "Mike Smith",
+            "date": "2024-11-02",
+            "rating": 4,
+            "text": "Pelayanan cepat dan ramah."
+        },
+        {
+            "user_name": "Alice Johnson",
+            "date": "2024-11-03",
+            "rating": 3,
+            "text": "Hasil kerja cukup baik, tapi bisa lebih baik lagi."
+        }
+    ]
+
+    # Render template with hardcoded data
+    return render(request, 'profil_pekerja.html', {
+        "testimonials": testimonials
+    })
