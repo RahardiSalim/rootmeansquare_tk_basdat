@@ -17,9 +17,9 @@
                 <p class="text-lg font-bold text-gray-800">Rp{{ user.balance|floatformat:0 }}</p>
             </div>
             <!-- Lakukan Transaksi Button -->
-            <button class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md">
+            <a href="{% url 'mypay:mypay_transaction' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md">
                 Lakukan Transaksi
-            </button>
+            </a>            
         </div>
 
         <!-- Transaction History -->
