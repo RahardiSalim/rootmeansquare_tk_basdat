@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Status Pekerjaan Jasa{% endblock %}
+
+{% block content %}
+<div class="bg-white shadow-md rounded-lg p-6 w-full max-w-4xl mx-auto">
+    <h2 class="text-lg font-semibold text-gray-700 mb-4">Status Pekerjaan Jasa</h2>
+
+    <!-- Filters -->
+    <form method="get" class="flex space-x-4 mb-6">
+        <div>
+            <label for="name" class="block text-sm font-medium text-gray-700">Nama Jasa</label>
+            <input type="text" name="name" id="name" value="{{ search_name }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+        </div>
+        <div>
+            <label for="status" class="block text-sm font-medium text-gray-700">Status Pesanan</label>
+            <select name="status" id="status" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                <option value="">Pilih Status</option>
+                {% for status in status_options %}
+                <option value="{{ status }}" {% if status == search_status %}selected{% endif %}>{{ status }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="flex items-end">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md">Search</button>
+        </div>
+    </form>
+
+    <!-- Jobs -->
+    <div class="space-y-4">
+        {% for job in jobs %}
+        <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg shadow-sm">
+            <div>
+                <p class="text-gray-800 font-semibold">Nama Subkategori Pesanan: {{ job.subcategory }}</p>
+                <p class="text-gray-600 text-sm">Nama Pelanggan: {{ job.customer }}</p>
+                <p class="text-gray-600 text-sm">Tanggal Pemesanan: {{ job.order_date }}</p>
+                <p class="text-gray-600 text-sm">Tanggal Pekerjaan: {{ job.job_date }}</p>
+                <p class="text-gray-600 text-sm">Status Pesanan: <span class="font-bold">{{ job.status }}</span></p>
+            </div>
+            <div class="text-right">
+                <p class="text-gray-800 font-bold">Total Biaya: Rp{{ job.price }}</p>
+                {% if job.status != "Pesanan Selesai" and job.status != "Pesanan Dibatalkan" %}
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="job_id" value="{{ job.id }}">
+                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md">
+                        {% if job.status == "Menunggu Pekerja Berangkat" %}Tiba Di Lokasi{% endif %}
+                        {% if job.status == "Pekerja Tiba Di Lokasi" %}Melakukan Pelayanan Jasa{% endif %}
+                        {% if job.status == "Pelayanan Jasa Sedang Dilakukan" %}Selesai Melakukan Pelayanan{% endif %}
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-gray-600 text-center">Tidak ada pekerjaan tersedia.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

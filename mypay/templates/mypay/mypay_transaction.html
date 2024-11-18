@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bg-white shadow-md rounded-lg p-6 w-full max-w-3xl mx-auto mt-10">
+    <!-- Header -->
+    <div class="mb-6">
+        <h2 class="text-lg font-semibold text-gray-700">Form Transaksi MyPay</h2>
+        <p class="text-sm text-gray-600">Tanggal Transaksi: {{ date }}</p>
+    </div>
+
+    <!-- User Info -->
+    <div class="mb-6">
+        <div class="flex justify-between items-center">
+            <div>
+                <p class="text-sm font-semibold text-gray-600">Nama User</p>
+                <p class="text-lg font-bold text-gray-800">{{ user.name }}</p>
+            </div>
+            <div>
+                <p class="text-sm font-semibold text-gray-600">Saldo User</p>
+                <p class="text-lg font-bold text-gray-800">Rp{{ user.balance|floatformat:0 }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Dropdown -->
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-6">
+            <label for="category" class="block text-sm font-medium text-gray-700">Kategori Transaksi</label>
+            <select
+                id="category"
+                name="category"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                       focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            >
+                <option value="">Pilih Kategori</option>
+                <option value="TopUp">TopUp</option>
+                <option value="PayService">Bayar Jasa</option>
+                <option value="Transfer">Transfer</option>
+                <option value="Withdraw">Withdraw</option>
+            </select>
+        </div>
+
+        <!-- Dynamic Forms -->
+        <div id="form-state" class="space-y-6">
+            <!-- State 1: Top Up -->
+            <div id="state1" class="mb-6 border-t pt-4">
+                <h3 class="text-md font-semibold text-gray-700">State 1: Top Up</h3>
+                <label for="topup_nominal" class="block text-sm font-medium text-gray-700">Nominal</label>
+                <input
+                    type="number"
+                    id="topup_nominal"
+                    name="topup_nominal"
+                    placeholder="Masukkan nominal"
+                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                           focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md mt-4">
+                    Top Up
+                </button>
+            </div>
+
+            <!-- State 2: Pay Service -->
+            <div id="state2" class="mb-6 border-t pt-4">
+                <h3 class="text-md font-semibold text-gray-700">State 2: Bayar Jasa</h3>
+                <div class="flex justify-between items-center space-x-4">
+                    <div class="flex-1">
+                        <label for="service" class="block text-sm font-medium text-gray-700">Pesanan Jasa</label>
+                        <select
+                            id="service"
+                            name="service"
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                                   focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        >
+                            <option value="">Pilih Jasa</option>
+                            {% for service in services %}
+                            <option value="{{ service.id }}" data-price="{{ service.price }}">{{ service.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="flex-1">
+                        <label for="price" class="block text-sm font-medium text-gray-700">Harga Jasa</label>
+                        <input
+                            type="text"
+                            id="price"
+                            name="price"
+                            placeholder="Harga"
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                                   focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            disabled
+                        />
+                    </div>
+                </div>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md mt-4">
+                    Bayar
+                </button>
+            </div>
+
+            <!-- State 3: Transfer -->
+            <div id="state3" class="mb-6 border-t pt-4">
+                <h3 class="text-md font-semibold text-gray-700">State 3: Transfer</h3>
+                <label for="transfer_no_hp" class="block text-sm font-medium text-gray-700">No HP Tujuan</label>
+                <input
+                    type="text"
+                    id="transfer_no_hp"
+                    name="transfer_no_hp"
+                    placeholder="Masukkan No HP tujuan"
+                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                           focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+                <label for="transfer_nominal" class="block text-sm font-medium text-gray-700 mt-4">Nominal</label>
+                <input
+                    type="number"
+                    id="transfer_nominal"
+                    name="transfer_nominal"
+                    placeholder="Masukkan nominal"
+                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                           focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md mt-4">
+                    Transfer
+                </button>
+            </div>
+
+            <!-- State 4: Withdraw -->
+            <div id="state4" class="mb-6 border-t pt-4">
+                <h3 class="text-md font-semibold text-gray-700">State 4: Withdraw</h3>
+                <label for="withdraw_bank" class="block text-sm font-medium text-gray-700">Nama Bank</label>
+                <select
+                    id="withdraw_bank"
+                    name="withdraw_bank"
+                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                           focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                >
+                    <option value="">Pilih Bank</option>
+                    {% for bank in banks %}
+                    <option value="{{ bank }}">{{ bank }}</option>
+                    {% endfor %}
+                </select>
+                <label for="withdraw_account_number" class="block text-sm font-medium text-gray-700 mt-4">No Rekening</label>
+                <input
+                    type="text"
+                    id="withdraw_account_number"
+                    name="withdraw_account_number"
+                    placeholder="Masukkan nomor rekening"
+                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                           focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+                <label for="withdraw_nominal" class="block text-sm font-medium text-gray-700 mt-4">Nominal</label>
+                <input
+                    type="number"
+                    id="withdraw_nominal"
+                    name="withdraw_nominal"
+                    placeholder="Masukkan nominal"
+                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                           focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md mt-4">
+                    Withdraw
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

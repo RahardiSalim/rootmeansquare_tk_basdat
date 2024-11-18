@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'core',
     'authentication',
     'service',
-    'payment',
+    'mypay',
     'worker',
     'homepage'
 ]
@@ -61,8 +61,8 @@ ROOT_URLCONF = 'tugas_kelompok.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [],  # Empty if you don't have a global template directory
+        'APP_DIRS': True,  # Enables automatic template discovery in app directories
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -73,6 +73,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'tugas_kelompok.wsgi.application'
 
