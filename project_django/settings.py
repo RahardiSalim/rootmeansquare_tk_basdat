@@ -1,0 +1,13 @@
+
+// ...existing code...
+INSTALLED_APPS = [
+    'django.contrib.messages',
+    // ...other apps...
+]
+
+MIDDLEWARE = [
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    // ...other middleware...
+]
+// ...existing code...
