@@ -61,7 +61,11 @@ orders = [
         'date': '2024-11-17 14:30:00',
         'discount_code': 'DISKON50',
         'payment_method': 'E-Wallet',
-        'testimonial_created': False,
+        'testimonial_created': True,
+        'testimonial': {
+            'rating': 5,
+            'comment': 'Pelayanan sangat memuaskan dan tepat waktu!'
+        }
     },
     {
         'subcategory': 'Subkategori Jasa 2',
@@ -72,7 +76,11 @@ orders = [
         'date': '2024-11-17 15:00:00',
         'discount_code': 'DISKON20',
         'payment_method': 'Transfer Bank',
-        'testimonial_created': False,
+        'testimonial_created': True,
+        'testimonial': {
+            'rating': 4,
+            'comment': 'Pekerja ramah dan professional'
+        }
     },
     {
         'subcategory': 'Subkategori Jasa 3',
@@ -95,6 +103,10 @@ orders = [
         'discount_code': 'DISKON30',
         'payment_method': 'E-Wallet',
         'testimonial_created': True,
+        'testimonial': {
+            'rating': 5,
+            'comment': 'Hasil kerja sangat rapi dan sesuai harapan'
+        }
     }
 ]
 
@@ -177,3 +189,35 @@ def profil_pekerja(request):
     return render(request, 'profil_pekerja.html', {
         "testimonials": testimonials
     })
+
+def create_testimonial(request):
+    if request.method == 'POST':
+        order_id = request.POST.get('order_id')
+        rating = request.POST.get('rating')
+        comment = request.POST.get('comment')
+        
+        # For demo purposes, add the testimonial data to the order
+        for order in orders:
+            if str(orders.index(order)) == order_id:
+                order['testimonial_created'] = True
+                order['testimonial'] = {
+                    'rating': int(rating),
+                    'comment': comment
+                }
+                break
+        
+        return redirect('view_orders')
+    return redirect('view_orders')
+
+def cancel_testimonial(request):
+    if request.method == 'POST':
+        order_id = request.POST.get('order_id')
+        
+        # For demo purposes, just unmark the testimonial
+        for order in orders:
+            if str(orders.index(order)) == order_id:
+                order['testimonial_created'] = False
+                break
+        
+        return redirect('view_orders')
+    return redirect('view_orders')

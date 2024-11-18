@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold mb-6">DISKON</h1>
+
+    <!-- Voucher Section -->
+    <div class="mb-8">
+        <h2 class="text-xl font-semibold mb-4">Voucher</h2>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-center text-sm font-medium text-gray-500">Kode</th>
+                        <th class="px-6 py-3 text-center text-sm font-medium text-gray-500">Potongan</th>
+                        <th class="px-6 py-3 text-center text-sm font-medium text-gray-500">Min Transaksi Pemesanan</th>
+                        <th class="px-6 py-3 text-center text-sm font-medium text-gray-500">Jumlah Hari Berlaku</th>
+                        <th class="px-6 py-3 text-center text-sm font-medium text-gray-500">Kuota Penggunaan</th>
+                        <th class="px-6 py-3 text-center text-sm font-medium text-gray-500">Harga</th>
+                        <th class="px-6 py-3 text-center text-sm font-medium text-gray-500">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for voucher in vouchers %}
+                    <tr>
+                        <td class="px-6 py-4 text-center">{{ voucher.code }}</td>
+                        <td class="px-6 py-4 text-center">{{ voucher.discount }}</td>
+                        <td class="px-6 py-4 text-center">{{ voucher.min_order }}</td>
+                        <td class="px-6 py-4 text-center">{{ voucher.validity_days }}</td>
+                        <td class="px-6 py-4 text-center">{{ voucher.quota }}</td>
+                        <td class="px-6 py-4 text-center">{{ voucher.price }}</td>
+                        <td class="px-6 py-4 text-center">
+                            <button 
+                                onclick="buyVoucher('{{ voucher.code }}', {{ voucher.price }})"
+                                class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                            >
+                                Beli
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Promo Section -->
+    <div>
+        <h2 class="text-xl font-semibold mb-4">Promo</h2>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-center text-sm font-medium text-gray-500">Kode</th>
+                        <th class="px-6 py-3 text-center text-sm font-medium text-gray-500">Tanggal Akhir Berlaku</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for promo in promos %}
+                    <tr>
+                        <td class="px-6 py-4 text-center">{{ promo.code }}</td>
+                        <td class="px-6 py-4 text-center">{{ promo.end_date }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal Template -->
+    <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 w-96">
+            <div class="relative bg-white rounded-lg shadow">
+                <div class="p-6">
+                    <h3 id="modalTitle" class="text-lg font-bold mb-4 text-center"></h3>
+                    <p id="modalMessage" class="text-center mb-4"></p>
+                    <div class="text-center">
+                        <button onclick="closeModal()" class="w-full py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600">
+                            Button Tutup
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const userBalance = {{ user_balance }};
+
+    function showModal(status, message) {
+        const modal = document.getElementById('modal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        
+        modalTitle.textContent = status === 'success' ? 'SUKSES' : 'GAGAL';
+        modalMessage.textContent = message;
+        
+        if (status === 'success') {
+            modalTitle.classList.add('text-green-600');
+            modalTitle.classList.remove('text-red-600');
+        } else {
+            modalTitle.classList.add('text-red-600');
+            modalTitle.classList.remove('text-green-600');
+        }
+        
+        modal.classList.remove('hidden');
+    }
+    
+    function closeModal() {
+        const modal = document.getElementById('modal');
+        modal.classList.add('hidden');
+        
+        const modalTitle = document.getElementById('modalTitle');
+        if (modalTitle.classList.contains('text-green-600')) {
+            location.reload();
+        }
+    }
+
+    function buyVoucher(voucherCode, voucherPrice) {
+        if (userBalance < voucherPrice) {
+            showModal('failed', 'Maaf, saldo Anda tidak mencukupi untuk membeli voucher ini.');
+            return;
+        }
+
+        fetch("{% url 'discount:buy_voucher' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ voucher_code: voucherCode })
+        })
+        .then(response => response.json())
+        .then(data => {
+            showModal(data.status, data.message);
+        })
+        .catch(error => {
+            showModal('failed', 'Terjadi kesalahan. Silakan coba lagi.');
+        });
+    }
+</script>
+{% endblock %}

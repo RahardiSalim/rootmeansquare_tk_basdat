@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from discount import views
+from discount.views import buy_voucher
 
 urlpatterns = [
     # path('', admin.site.urls),
@@ -27,5 +29,7 @@ urlpatterns = [
     path('service/', include('service.urls')),
     path('mypay/', include('mypay.urls')),
     path('worker/', include('worker.urls')),
-    path('homepage/', include('homepage.urls'))
+    path('homepage/', include('homepage.urls')),
+    path('discount/', include('discount.urls')),
+    path('discount/buy/', buy_voucher, name='buy_voucher'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
