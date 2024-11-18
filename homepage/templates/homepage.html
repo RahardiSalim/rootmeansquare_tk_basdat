@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Services Home{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <h1 class="text-2xl font-bold mb-4">Find Services</h1>
+
+    <!-- Filters -->
+    <form method="get" class="mb-6">
+        <div class="flex space-x-4">
+            <!-- Dropdown Filter -->
+            <select name="category" class="border rounded px-3 py-2">
+                <option value="">Pilih Kategori</option>
+                {% for category in categories %}
+                    <option value="{{ category.name }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Search Bar -->
+            <input type="text" name="search" placeholder="Nama Subkategori" class="border rounded px-3 py-2" value="{{ request.GET.search|default:'' }}">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
+        </div>
+    </form>
+
+    <!-- Categories and Subcategories -->
+    <div class="space-y-6">
+        {% for category in categories %}
+        <div class="bg-white shadow-md rounded p-4">
+            <h2 class="font-bold text-lg mb-2">{{ category.name }}</h2>
+            <ul>
+                {% for subcategory in category.subcategories %}
+                <li class="border-b py-2">
+                    <a href="#" class="text-blue-500 hover:underline">{{ subcategory }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

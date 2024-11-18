@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Pesan Jasa{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-white p-6 rounded shadow-md">
+    <h1 class="text-xl font-bold mb-4">Pesan Jasa</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <!-- Tanggal Pemesanan -->
+        <div class="mb-4">
+            <label for="order_date" class="block text-sm font-semibold mb-2">Tanggal Pemesanan:</label>
+            <input type="text" id="order_date" class="border rounded px-3 py-2 w-full" value="{{ current_date }}" readonly>
+        </div>
+
+        <!-- Diskon -->
+        <div class="mb-4">
+            <label for="discount_code" class="block text-sm font-semibold mb-2">Diskon:</label>
+            <input type="text" name="discount_code" id="discount_code" class="border rounded px-3 py-2 w-full" placeholder="Kode Diskon">
+        </div>
+
+        <!-- Total Pembayaran -->
+        <div class="mb-4">
+            <label for="total_payment" class="block text-sm font-semibold mb-2">Total Pembayaran:</label>
+            <input type="text" name="total_payment" id="total_payment" class="border rounded px-3 py-2 w-full" placeholder="Rp xxx.xxx,xx">
+        </div>
+
+        <!-- Metode Pembayaran -->
+        <div class="mb-4">
+            <label for="payment_method" class="block text-sm font-semibold mb-2">Metode Pembayaran:</label>
+            <select name="payment_method" id="payment_method" class="border rounded px-3 py-2 w-full">
+                <option value="Transfer Bank">Transfer Bank</option>
+                <option value="E-Wallet">E-Wallet</option>
+                <option value="Cash">Cash</option>
+            </select>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Pesan Jasa</button>
+    </form>
+</div>
+{% endblock %}
